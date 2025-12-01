@@ -1,0 +1,193 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+
+interface NavLink {
+  id: string;
+  label: string;
+}
+
+const links: NavLink[] = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const Navbar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Optimized Scroll Listener for Navbar styling
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = useCallback((id: string) => {
+    setIsOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
+  // Intersection Observer to track active section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: "-10% 0px -50% 0px" } 
+    );
+
+    links.forEach((link) => {
+      const element = document.getElementById(link.id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const menuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1], when: "afterChildren" }
+    },
+    open: {
+      opacity: 1,
+      height: "auto",
+      transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1], when: "beforeChildren", staggerChildren: 0.05 }
+    }
+  };
+
+  const mobileLinkVariants: Variants = {
+    closed: { opacity: 0, y: -10 },
+    open: { opacity: 1, y: 0 }
+  };
+
+  return (
+    <nav 
+      className={`fixed top-0 z-50 w-full transition-all duration-500 border-b ${
+        isScrolled 
+          ? "bg-white/80 backdrop-blur-xl border-gray-200/50 py-2" 
+          : "bg-transparent border-transparent py-4"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-14">
+          
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => scrollToSection('home')}>
+            <div className="text-lg font-bold tracking-tight text-black flex items-center gap-2.5 group">
+              <motion.span 
+                whileHover={{ rotate: 90, scale: 1.1, backgroundColor: "#000" }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                className="bg-black text-white w-9 h-9 flex items-center justify-center rounded-lg text-xs font-bold shadow-md"
+              >
+                JC
+              </motion.span>
+              <span className="group-hover:text-gray-600 transition-colors tracking-tighter uppercase text-sm font-bold">Dalupang.</span>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {links.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <button
+                  key={link.id}
+                  onClick={() => scrollToSection(link.id)}
+                  className={`relative px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors duration-300 outline-none ${
+                    isActive ? "text-black" : "text-gray-400 hover:text-black"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-active"
+                      className="absolute inset-0 bg-gray-100/80 rounded-full -z-10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center md:hidden">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 rounded-lg text-black hover:bg-gray-100 focus:outline-none transition-colors"
+            >
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+                    <X size={24} strokeWidth={1.5} />
+                  </motion.div>
+                ) : (
+                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+                    <Menu size={24} strokeWidth={1.5} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 overflow-hidden absolute w-full left-0 shadow-2xl z-40"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+          >
+            <div className="px-6 py-8 space-y-2">
+              {links.map((link) => (
+                <motion.div key={link.id} variants={mobileLinkVariants}>
+                  <button
+                    onClick={() => scrollToSection(link.id)}
+                    className={`block w-full text-left px-5 py-4 rounded-2xl text-lg font-bold tracking-tight transition-all duration-300 ${
+                      activeSection === link.id
+                        ? 'bg-black text-white shadow-lg pl-7'
+                        : 'text-gray-400 hover:bg-gray-50 hover:text-black hover:pl-7'
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+export default Navbar;

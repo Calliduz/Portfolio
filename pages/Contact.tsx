@@ -1,0 +1,202 @@
+import React, { useState } from 'react';
+import { Mail, MapPin, Send, Loader2, CheckCircle, Phone, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { personalInfo } from '../data';
+
+interface ContactProps {
+  id: string;
+}
+
+const Contact: React.FC<ContactProps> = ({ id }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    
+    // Simulate Backend POST Request
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000); 
+    } catch (error) {
+      setStatus('error');
+    }
+  };
+
+  return (
+    <section id={id} className="py-32 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div className="text-center max-w-2xl mx-auto space-y-4 pb-4">
+          <h2 className="text-5xl font-extrabold tracking-tighter text-black">Get in Touch</h2>
+          <p className="text-lg text-gray-500 font-light">
+            Interested in working together? I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
+          {/* Contact Info */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-10 bg-white/50 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/60 shadow-sm h-full flex flex-col justify-between"
+          >
+            <div>
+              <h3 className="text-3xl font-bold text-black mb-6 tracking-tight">Let's talk about everything!</h3>
+              <p className="text-gray-600 mb-10 leading-relaxed font-light">
+                I am currently open to internship opportunities, freelance projects, and open-source collaborations. Feel free to reach out via the form or my direct channels.
+              </p>
+              
+              <div className="space-y-6">
+                <motion.a 
+                  whileHover={{ x: 5, backgroundColor: "rgba(255,255,255,0.8)" }}
+                  href={`mailto:${personalInfo.email}`}
+                  className="flex items-center gap-5 group p-5 rounded-3xl transition-all border border-transparent hover:border-gray-200 hover:shadow-sm"
+                >
+                  <div className="p-4 bg-black text-white rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-black text-sm uppercase tracking-wider mb-1">Email</p>
+                    <span className="text-gray-600 break-all text-lg font-medium group-hover:text-black transition-colors">{personalInfo.email}</span>
+                  </div>
+                </motion.a>
+
+                <motion.a 
+                  whileHover={{ x: 5, backgroundColor: "rgba(255,255,255,0.8)" }}
+                  href={`tel:${personalInfo.phone}`}
+                  className="flex items-center gap-5 group p-5 rounded-3xl transition-all border border-transparent hover:border-gray-200 hover:shadow-sm"
+                >
+                  <div className="p-4 bg-white text-black border border-gray-200 rounded-2xl shadow-sm group-hover:bg-black group-hover:text-white transition-colors duration-300">
+                    <Phone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-black text-sm uppercase tracking-wider mb-1">Phone</p>
+                    <span className="text-gray-600 text-lg font-medium group-hover:text-black transition-colors">{personalInfo.phone}</span>
+                  </div>
+                </motion.a>
+                
+                <div className="flex items-center gap-5 p-5 rounded-3xl border border-transparent">
+                  <div className="p-4 bg-white text-black border border-gray-200 rounded-2xl shadow-sm">
+                    <MapPin className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-black text-sm uppercase tracking-wider mb-1">Location</p>
+                    <p className="text-gray-600 text-lg font-medium">{personalInfo.location}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Contact Form */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-white/70 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/80 shadow-xl overflow-hidden"
+          >
+             <AnimatePresence>
+               {status === 'success' && (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.95 }} 
+                   animate={{ opacity: 1, scale: 1 }} 
+                   exit={{ opacity: 0, scale: 0.95 }}
+                   className="absolute inset-0 bg-white/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center text-center p-8"
+                 >
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                    >
+                      <CheckCircle className="w-24 h-24 text-black mb-6" strokeWidth={1.5} />
+                    </motion.div>
+                    <h3 className="text-4xl font-extrabold text-black mb-2 tracking-tight">Message Sent</h3>
+                    <p className="text-gray-500 mb-10 text-lg">Thanks for reaching out. I'll get back to you shortly.</p>
+                    <button 
+                      onClick={() => setStatus('idle')}
+                      className="px-10 py-4 bg-gray-100 text-black font-bold rounded-xl hover:bg-black hover:text-white transition-colors"
+                    >
+                      Send Another
+                    </button>
+                 </motion.div>
+               )}
+             </AnimatePresence>
+
+            <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+              <div className="space-y-2">
+                <label htmlFor="name" className="block text-xs font-bold text-black uppercase tracking-wider ml-1">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder:text-gray-300 font-medium"
+                  placeholder="What should I call you?"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-xs font-bold text-black uppercase tracking-wider ml-1">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all placeholder:text-gray-300 font-medium"
+                  placeholder="Where can I reach you?"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="block text-xs font-bold text-black uppercase tracking-wider ml-1">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none placeholder:text-gray-300 font-medium"
+                  placeholder="Tell me about your project or inquiry..."
+                ></textarea>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                disabled={status === 'submitting'}
+                className="w-full flex items-center justify-center gap-2 px-8 py-5 bg-black text-white font-bold text-lg rounded-2xl hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+              >
+                {status === 'submitting' ? (
+                  <>Sending <Loader2 className="animate-spin" size={20} /></>
+                ) : (
+                  <>Send Message <ArrowRight size={20} /></>
+                )}
+              </motion.button>
+            </form>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Contact;
