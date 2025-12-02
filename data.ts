@@ -40,45 +40,83 @@ export const personalInfo = {
 export const projects: Project[] = [
   {
     id: 1,
-    title: 'Barangay Services Portal',
+    title: 'FastLinks - URL Shortener',
     description:
-      'A comprehensive MERN stack application that digitizes local government services. Features include resident document requests, incident reporting, and an administrative dashboard for officials.',
-    technologies: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT'],
-    // Place your image at: public/images/project-barangay.jpg
-    imageUrl: '/images/project-barangay.jpg',
-    demoUrl: '#',
-    repoUrl: '#',
+      'A lightweight MERN-based URL shortening service that generates clean, shareable links with quick and reliable redirects. Includes link analytics, simple management tools, and a fast, minimalist interface.',
+    technologies: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Vite',
+      'Tailwind CSS',
+      'Cloudflare',
+      'Render',
+    ],
+    imageUrl: '/images/project-fastlinks.jpg',
+    demoUrl: 'https://fastlinks.clev.studio',
+    repoUrl: 'https://github.com/jjProjectStash/url-shortener',
   },
   {
     id: 2,
-    title: 'Inventory Management System',
+    title: 'iBarangay - Barangay E-Services Platform',
     description:
-      'A real-time inventory tracking system built for small businesses. Utilizes RESTful APIs for data management and provides insightful analytics on stock levels and trends.',
-    technologies: ['TypeScript', 'Next.js', 'Tailwind CSS', 'PostgreSQL'],
-    // Place your image at: public/images/project-inventory.jpg
-    imageUrl: '/images/project-inventory.jpg',
-    demoUrl: '#',
-    repoUrl: '#',
+      'A web platform that digitizes essential barangay services, enabling residents to request documents, submit concerns, and access public information online. Features include resident records, request processing, and an admin dashboard for efficient local governance.',
+    technologies: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Vite',
+      'Tailwind CSS',
+      'Cloudflare',
+      'Render',
+    ],
+    imageUrl: '/images/project-ibarangay.jpg',
+    demoUrl: 'https://ibarangay.clev.studio',
+    repoUrl: 'https://github.com/jjProjectStash/aibarangay',
   },
   {
     id: 3,
-    title: 'Community Health Tracker',
+    title: 'Notified - Student Attendance & Communication System',
     description:
-      'An information system designed to help local communities track health metrics and schedule appointments. Built with a strong focus on accessibility and data security.',
-    technologies: ['React', 'Vite', 'Node.js', 'Render'],
-    // Place your image at: public/images/project-health.jpg
-    imageUrl: '/images/project-health.jpg',
-    repoUrl: '#',
+      'A school-focused management system that tracks student attendance and automatically emails parents or guardians about absences, tardiness, and excused entries. Designed to improve transparency, timely updates, and school-home communication.',
+    technologies: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Vite',
+      'Tailwind CSS',
+      'Cloudflare',
+      'Render',
+    ],
+    imageUrl: '/images/project-notified.jpg',
+    demoUrl: 'https://notified.clev.studio',
+    repoUrl: 'https://github.com/jjProjectStash/notified',
   },
   {
     id: 4,
-    title: 'Personal Portfolio V1',
+    title: 'EcoCycle Talipapa - Barangay Recycling & Management System',
     description:
-      'My first iteration of a personal portfolio site. This project demonstrates my growth in UI/UX design and proficiency with modern frontend technologies.',
-    technologies: ['HTML', 'CSS', 'JavaScript', 'Vercel'],
-    // Place your image at: public/images/project-portfolio.jpg
-    imageUrl: '/images/project-portfolio.jpg',
-    demoUrl: '#',
+      'A full MERN stack platform that manages barangay operations while promoting sustainability through a recycling barter program. Residents can exchange recyclable materials for points and redeem them for eco-friendly items such as bags, rugs, or soil—encouraging environmental responsibility at the community level.',
+    technologies: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Vite',
+      'Tailwind CSS',
+      'Vercel',
+      'Render',
+      'AWS S3',
+    ],
+    imageUrl: '/images/project-ecocycle.jpg',
+    demoUrl: 'https://www.ecocycletalipapa.com',
   },
 ];
 
@@ -111,7 +149,7 @@ export const skillsData = [
     category: 'DevOps & Tools',
     iconName: 'Terminal',
     description: 'Deployment, version control, and cloud services.',
-    skills: ['Git / GitHub', 'Linux', 'Vercel', 'Render', 'Cloudflare (Basic)', 'Postman'],
+    skills: ['Git / GitHub', 'Linux', 'Vercel', 'Render', 'Cloudflare (Basic)'],
   },
   {
     category: 'Professional Skills',
@@ -134,7 +172,7 @@ export const skillsData = [
 export const timeline = [
   {
     year: '2023 - Present',
-    role: 'Freelance Full-Stack Developer',
+    role: 'Freelance Software Developer',
     description:
       'Developing custom web solutions for local clients, specializing in MERN stack applications for community services including Barangay management systems.',
     type: 'work',
