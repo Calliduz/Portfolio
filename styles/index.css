@@ -410,7 +410,9 @@ body {
   background-color: var(--bg-tertiary);
   border-left: 1px solid var(--border-primary);
   backdrop-filter: blur(8px);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .scroll-progress-bar {

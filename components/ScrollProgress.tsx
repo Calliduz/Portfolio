@@ -14,17 +14,17 @@ const SCROLL_THRESHOLD = 400;
 /**
  * ScrollProgress Component
  * Displays a scroll progress indicator and a back-to-top button
- * 
+ *
  * @returns The scroll progress indicator and back-to-top button
  */
 const ScrollProgress: React.FC = () => {
   const { scrollYProgress } = useScroll();
-  
+
   // Apply spring physics for smooth filling animation
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -32,7 +32,7 @@ const ScrollProgress: React.FC = () => {
   useEffect(() => {
     // Throttled scroll handler using requestAnimationFrame for performance
     let ticking = false;
-    
+
     const handleScroll = (): void => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -63,7 +63,7 @@ const ScrollProgress: React.FC = () => {
         role="progressbar"
         aria-label="Page scroll progress"
       />
-      
+
       {/* Desktop: Vertical progress bar on the right side */}
       <div className="fixed top-0 right-0 bottom-0 w-2.5 scroll-progress-track z-60 hidden md:block">
         <motion.div
