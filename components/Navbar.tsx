@@ -76,15 +76,39 @@ const Navbar: React.FC = () => {
 
   // Intersection Observer to track active section
   useEffect(() => {
+    // Track visibility ratio for each section
+    const sectionVisibility: Record<string, number> = {};
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+          // Store the intersection ratio for each section
+          sectionVisibility[entry.target.id] = entry.intersectionRatio;
+        });
+
+        // Find the section with the highest visibility ratio
+        let maxRatio = 0;
+        let mostVisibleSection = 'home';
+
+        links.forEach((link) => {
+          const ratio = sectionVisibility[link.id] || 0;
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            mostVisibleSection = link.id;
           }
         });
+
+        // Only update if we have a visible section
+        if (maxRatio > 0) {
+          setActiveSection(mostVisibleSection);
+        }
       },
-      { threshold: 0.2, rootMargin: '-20% 0px -35% 0px' }
+      {
+        // Use multiple thresholds for more granular tracking
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        // Shrink the detection area to focus on the center of the viewport
+        rootMargin: '-10% 0px -10% 0px',
+      }
     );
 
     links.forEach((link) => {
