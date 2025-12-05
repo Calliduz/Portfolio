@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Briefcase, GraduationCap, MapPin, Download, CheckCircle, FileText } from 'lucide-react';
 import { personalInfo, timeline } from '../data';
+import GitHubActivity from '../components/GitHubActivity';
 
 /** CV file path in public folder */
 const CV_FILE_PATH = '/Trimmed CV.pdf';
@@ -282,6 +283,21 @@ const About: React.FC<AboutProps> = ({ id }) => {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* GitHub Activity Section */}
+        <div className="pt-20">
+          <div className="text-center mb-12 space-y-3">
+            <h3 className="text-3xl md:text-4xl font-extrabold text-theme-primary tracking-tight">
+              GitHub Activity
+            </h3>
+            <p className="text-theme-secondary font-medium">
+              My open source contributions and recent coding activity
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <GitHubActivity username="Calliduz" maxEvents={5} />
           </div>
         </div>
       </div>
