@@ -118,6 +118,26 @@ export const projects: Project[] = [
     imageUrl: '/images/ecocycle.jpg',
     demoUrl: 'https://www.ecocycletalipapa.com',
   },
+  {
+    id: 5,
+    title: 'MindFlip - Memory Matching Game',
+    description:
+      'MindFlip is a playful memory-matching game where players flip cards, discover hidden icons, and race to pair everything up as quickly as possible. With smooth transitions, randomized boards, and simple but addictive mechanics, the game offers a casual challenge that strengthens recall and observation skills while providing a fun, lightweight gaming experience on any device.',
+    technologies: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Vite',
+      'Tailwind CSS',
+      'Cloudflare',
+      'Render',
+    ],
+    demoUrl: 'https://mindflip.clev.studio',
+    repoUrl: 'https://github.com/Calliduz/mindflip',
+    imageUrl: '/images/mindflipss.jpg',
+  },
 ];
 
 /**
